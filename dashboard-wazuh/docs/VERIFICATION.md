@@ -6,7 +6,7 @@ Cwd comprobado: `/Users/javar/github/unipanam/opensourceSystemNLangs/dashboard-w
 
 | Escenario | Resultado |
 |---|---|
-| `mvn -B test package` | BUILD SUCCESS; 134 pruebas, 0 fallos, 0 errores, 0 omitidas |
+| `mvn -B test package` | BUILD SUCCESS; 132 pruebas, 0 fallos, 0 errores, 0 omitidas (última ejecución: 12:03:38 CDMX) |
 | Segundo `mvn -B -DskipTests package` sin cambiar fuentes | BUILD SUCCESS; se recrea el jar original antes de Shade |
 | `./scripts/demo-launcher.sh --port=18787` | `smoke.ok=true`, HTTP 202, store 13, accepted 1; errores y descartes 0 |
 | Contenido del smoke | 13 filas, 9 símbolos geográficos, 3 eventos sin ubicación; LDAP sintético: 11 found y 2 not-applicable |
@@ -19,6 +19,10 @@ Cwd comprobado: `/Users/javar/github/unipanam/opensourceSystemNLangs/dashboard-w
 | CLI `--live` sin WEBHOOK_TOKEN, puerto 0 o argumento desconocido | Salida 2, rechazo esperado |
 
 Los tests usan HTTP y LDAP reales aislados en loopback, no servicios institucionales. Incluyen paginación y renovación 401, envelope Wazuh, identidades UPN/sAM ambiguas, escaping y TLS/loopback, parser Unix/Windows/VirusTotal, dedupe/FIFO/concurrencia, autenticación y errores del webhook, filtros, selección y proyección proporcional. La prueba horaria usa una zona de media hora para distinguir UTC de la hora local.
+
+Se retiraron dos pruebas incidentales de longitud del token y copia de su
+valor. Se conservan las pruebas de aceptación/rechazo de autenticación y
+redacción de secretos; el conteo final no incluye esos getters/defaults.
 
 ## Correcciones verificadas durante integración
 
