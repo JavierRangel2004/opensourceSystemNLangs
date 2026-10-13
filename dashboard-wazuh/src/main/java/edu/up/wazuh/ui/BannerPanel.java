@@ -32,7 +32,7 @@ public final class BannerPanel extends JPanel {
         setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0,
                 demo ? new Color(140, 200, 140) : new Color(200, 120, 120)));
 
-        JLabel title = new JLabel("Dashboard Wazuh - Universidad de Panama",
+        JLabel title = new JLabel("Dashboard Wazuh - Universidad Panamericana",
                 SwingConstants.LEFT);
         title.setFont(title.getFont().deriveFont(Font.BOLD, 14f));
         title.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));

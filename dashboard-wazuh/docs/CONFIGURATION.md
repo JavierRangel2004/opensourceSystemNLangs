@@ -24,7 +24,7 @@ permisos necesarios para los modos del dashboard.
 | `LDAP_URL` | live | URL LDAPS del directorio | `ldaps://host:636`. Verificar el certificado del servidor |
 | `LDAP_BIND_DN` | live | DN de servicio para búsquedas | Proporcionado por el administrador del AD |
 | `LDAP_BIND_PASSWORD` | live | Contraseña del DN | Inyectada por gestor de secretos |
-| `LDAP_BASE_DN` | live | Base DN bajo el cual se buscan usuarios | Ej. `OU=Users,DC=up,DC=edu,DC=pa` |
+| `LDAP_BASE_DN` | live | Base DN bajo el cual se buscan usuarios | Lo confirma el administrador; ejemplo genérico: `OU=Users,DC=example,DC=com` |
 | `CUSTOM_DASHBOARD_TOKEN` | live | Token equivalente a `WEBHOOK_TOKEN` para el script | Necesario si el servicio del Manager no hereda la variable de la shell |
 | `CUSTOM_DASHBOARD_ENDPOINT` | live | Endpoint por defecto del script | Si el Manager no propaga `hook_url` en `argv[3]` |
 

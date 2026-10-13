@@ -6,7 +6,7 @@ Cwd comprobado: `/Users/javar/github/unipanam/opensourceSystemNLangs/dashboard-w
 
 | Escenario | Resultado |
 |---|---|
-| `mvn -B test package` | BUILD SUCCESS; 132 pruebas, 0 fallos, 0 errores, 0 omitidas (última ejecución: 12:03:38 CDMX) |
+| `mvn -B test package` | BUILD SUCCESS; 132 pruebas, 0 fallos, 0 errores, 0 omitidas (última ejecución: 12:20:35 CDMX, nombre Universidad Panamericana corregido) |
 | Segundo `mvn -B -DskipTests package` sin cambiar fuentes | BUILD SUCCESS; se recrea el jar original antes de Shade |
 | `./scripts/demo-launcher.sh --port=18787` | `smoke.ok=true`, HTTP 202, store 13, accepted 1; errores y descartes 0 |
 | Contenido del smoke | 13 filas, 9 símbolos geográficos, 3 eventos sin ubicación; LDAP sintético: 11 found y 2 not-applicable |
