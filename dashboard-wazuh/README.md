@@ -1,7 +1,7 @@
 # Dashboard Wazuh
 
 Dashboard para el segundo parcial de Sistemas y Lenguajes de Código Abierto
-(Universidad Panamericana). Integra la API del Wazuh Manager, un mapa temático
+(Universidad Panamericana, Campus Ciudad de México). Integra la API del Wazuh Manager, un mapa temático
 geográfico, la ingesta por una integración personalizada (webhook), la
 búsqueda LDAP condicional al usuario del evento, hilos acotados y gráficas
 JFreeChart — los seis requisitos del encargo del 2026-10-13.

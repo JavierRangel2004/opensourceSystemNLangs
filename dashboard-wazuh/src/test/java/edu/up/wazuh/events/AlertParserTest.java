@@ -458,17 +458,17 @@ assertEquals("BUILTIN" + "\\" + "svc-backup",
                   "rule": {"level": 5, "id": "5500"},
                   "agent": {"id": "001"},
                   "GeoLocation": {
-                    "city_name": "Panama City",
-                    "country_name": "PA",
-                    "latitude": 8.9824,
-                    "longitude": -79.5199
+                    "city_name": "Mexico City",
+                    "country_name": "MX",
+                    "latitude": 19.4326,
+                    "longitude": -99.1332
                   }
                 }
                 """;
         Alert a = parser.parse(json);
-        assertEquals(8.9824, a.latitude());
-        assertEquals(-79.5199, a.longitude());
-        assertEquals("PA", a.country());
+        assertEquals(19.4326, a.latitude());
+        assertEquals(-99.1332, a.longitude());
+        assertEquals("MX", a.country());
     }
 
     @Test

@@ -110,9 +110,9 @@ class DashboardPanelTest {
         runOnEdt(() -> {
             EventStore store = new EventStore(16);
             store.add(mk("a1", Instant.now(), "001", "ag", "r1", 3,
-                    "low", 8.98, -79.53), null, "");
+                    "low", 19.43, -99.13), null, "");
             store.add(mk("a2", Instant.now(), "002", "ag", "r2", 12,
-                    "high", 9.00, -79.50), null, "");
+                    "high", 19.45, -99.10), null, "");
             DashboardPanel panel = new DashboardPanel(store, true);
 
             // Pre-filtro: ambos eventos visibles.
@@ -140,9 +140,9 @@ class DashboardPanelTest {
             EventStore store = new EventStore(16);
             Instant now = Instant.now();
             store.add(mk("recent", now.minusSeconds(60),
-                    "001", "ag", "r1", 5, "ok", 8.98, -79.53), null, "");
+                    "001", "ag", "r1", 5, "ok", 19.43, -99.13), null, "");
             store.add(mk("old", now.minusSeconds(7200),
-                    "001", "ag", "r1", 5, "ok", 8.98, -79.53), null, "");
+                    "001", "ag", "r1", 5, "ok", 19.43, -99.13), null, "");
             DashboardPanel panel = new DashboardPanel(store, true);
 
             // Periodo por defecto: última 1h -> sólo 'recent'.
@@ -192,11 +192,11 @@ class DashboardPanelTest {
         runOnEdt(() -> {
             EventStore store = new EventStore(8);
             store.add(mk("a", Instant.now(), "001", "ag", "r1", 5,
-                    "x", 8.98, -79.53), null, "");
+                    "x", 19.43, -99.13), null, "");
             store.add(mk("b", Instant.now(), "002", "ag", "r1", 5,
-                    "x", 8.98, -79.53), null, "");
+                    "x", 19.43, -99.13), null, "");
             store.add(mk("c", Instant.now(), "003", "ag", "r1", 5,
-                    "x", 8.99, -79.55), null, "");
+                    "x", 19.44, -99.15), null, "");
             DashboardPanel panel = new DashboardPanel(store, true);
             panel.refresh();
             assertEquals(2, panel.geoMapPanel().symbolCount());
@@ -306,9 +306,9 @@ class DashboardPanelTest {
         runOnEdt(() -> {
             EventStore store = new EventStore(8);
             store.add(mk("p1", Instant.now(), "001", "ag", "r1", 5,
-                    "x", 8.98, -79.53), null, "");
+                    "x", 19.43, -99.13), null, "");
             store.add(mk("p2", Instant.now(), "002", "ag", "r2", 5,
-                    "y", 9.00, -79.50), null, "");
+                    "y", 19.45, -99.10), null, "");
             DashboardPanel panel = new DashboardPanel(store, true);
             panel.eventTablePanel().setSelectedIndexForTest(1);
             AtomicInteger notifications = new AtomicInteger();

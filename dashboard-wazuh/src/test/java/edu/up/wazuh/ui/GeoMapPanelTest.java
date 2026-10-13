@@ -29,7 +29,7 @@ class GeoMapPanelTest {
         SwingUtilities.invokeAndWait(() -> {
             GeoMapPanel panel = new GeoMapPanel();
             List<Alert> alerts = new ArrayList<>();
-            alerts.add(alert("a1", 8.98, -79.53, 5));
+            alerts.add(alert("a1", 19.4326, -99.1332, 5));
             alerts.add(alert("a2", null, null, 7));
             alerts.add(alert("a3", null, null, 4));
             panel.updateAlerts(alerts);
@@ -39,26 +39,26 @@ class GeoMapPanelTest {
     }
 
     @Test
-    @DisplayName("Natural Earth carga contornos: polígonos cubren coordenadas panameñas")
-    void naturalEarthCoversPanama() throws Exception {
+    @DisplayName("Natural Earth carga contornos: polígonos cubren Ciudad de México")
+    void naturalEarthCoversMexicoCity() throws Exception {
         SwingUtilities.invokeAndWait(() -> {
             GeoMapPanel panel = new GeoMapPanel();
             List<NaturalEarthMap.PolygonGeometry> polys = panel.polygonsForTest();
-            // El punto (8.98, -79.53) cae sobre Panamá según Natural Earth.
-            assertTrue(coversAny(polys, 8.98, -79.53),
-                    "Algun polígono de Natural Earth debe cubrir Panamá (8.98,-79.53)");
+            // El punto (19.4326, -99.1332) cae dentro de México según Natural Earth.
+            assertTrue(coversAny(polys, 19.4326, -99.1332),
+                    "Algún polígono de Natural Earth debe cubrir Ciudad de México");
         });
     }
 
     @Test
-    @DisplayName("Agregación: dos alertas en Panamá forman un símbolo de count=2")
+    @DisplayName("Agregación: dos alertas cercanas en CDMX forman un símbolo de count=2")
     void aggregationAtSameLocation() throws Exception {
         SwingUtilities.invokeAndWait(() -> {
             GeoMapPanel panel = new GeoMapPanel();
             List<Alert> alerts = new ArrayList<>();
-            alerts.add(alert("a1", 8.981, -79.531, 3));
-            alerts.add(alert("a2", 8.982, -79.532, 5));
-            alerts.add(alert("a3", 8.99, -79.55, 7));
+            alerts.add(alert("a1", 19.431, -99.131, 3));
+            alerts.add(alert("a2", 19.432, -99.132, 5));
+            alerts.add(alert("a3", 19.44, -99.15, 7));
             panel.updateAlerts(alerts);
             assertEquals(2, panel.symbolCount());
             GeoMapPanel.MapSymbol biggest = null;
@@ -78,7 +78,7 @@ class GeoMapPanelTest {
     void noAlertsClearsState() throws Exception {
         SwingUtilities.invokeAndWait(() -> {
             GeoMapPanel panel = new GeoMapPanel();
-            panel.updateAlerts(List.of(alert("located", 8.98, -79.53, 5),
+            panel.updateAlerts(List.of(alert("located", 19.4326, -99.1332, 5),
                     alert("unknown", null, null, 7)));
             panel.updateAlerts(List.of());
             assertEquals(0, panel.symbolCount());

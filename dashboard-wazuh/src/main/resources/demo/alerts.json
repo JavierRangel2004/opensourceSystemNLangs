@@ -1,26 +1,26 @@
 {
   "banner": "MUESTRA — Datos sintéticos marcados. Coordenadas reales como referencia; usuarios SINTÉTICOS. NO confundir con AD/LDAPS institucional.",
   "timestamp_policy": "Cada alerta lleva _minutes_ago; DemoDataLoader reubica timestamp a Instant.now().minus(_minutes_ago) para que las 12 alertas caigan en la última hora cuando arranca la presentación. Los _minutes_ago NO se modifican en vivo (sólo modo --demo).",
-  "field_policy": "username se almacena en data.srcuser (formato Wazuh estándar) — no en la raíz; geoLocation en la raíz con latitude/longitude. Dos alertas sin geoLocation para ejercitar el camino 'sin ubicación'.",
+  "field_policy": "username se almacena en data.srcuser (formato Wazuh estándar) — no en la raíz; geoLocation en la raíz con latitude/longitude. Tres alertas sin geoLocation para ejercitar el camino 'sin ubicación'.",
   "alerts": [
     {
       "id": "demo-001",
       "_minutes_ago": 58,
-      "agent": {"id": "001", "name": "web-panama"},
+      "agent": {"id": "001", "name": "web-cdmx"},
       "rule": {"id": "5715", "level": 3, "description": "SSH login succeeded"},
       "data": {"srcuser": "agarcia"},
-      "country": "Panama",
-      "geoLocation": {"latitude": 8.9824, "longitude": -79.5199},
+      "country": "Mexico",
+      "geoLocation": {"latitude": 19.4326, "longitude": -99.1332},
       "integration": "custom-dashboard"
     },
     {
       "id": "demo-002",
       "_minutes_ago": 55,
-      "agent": {"id": "002", "name": "db-mexico"},
+      "agent": {"id": "002", "name": "db-guadalajara"},
       "rule": {"id": "5402", "level": 5, "description": "Successful sudo session"},
       "data": {"srcuser": "jlopez"},
       "country": "Mexico",
-      "geoLocation": {"latitude": 19.4326, "longitude": -99.1332},
+      "geoLocation": {"latitude": 20.6597, "longitude": -103.3496},
       "integration": "custom-dashboard"
     },
     {

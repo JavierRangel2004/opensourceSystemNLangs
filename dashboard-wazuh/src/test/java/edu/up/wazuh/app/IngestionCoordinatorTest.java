@@ -27,7 +27,7 @@ class IngestionCoordinatorTest {
         return new Alert("a-" + System.nanoTime(), Instant.parse("2026-10-13T08:00:00Z"),
                 "001", "agent", "5715", 3, "demo",
                 username == null ? "" : username,
-                "Panama", 8.98, -79.51, "custom-dashboard");
+                "Mexico", 19.4326, -99.1332, "custom-dashboard");
     }
 
     @Test

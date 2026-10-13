@@ -6,7 +6,7 @@ Cwd comprobado: `/Users/javar/github/unipanam/opensourceSystemNLangs/dashboard-w
 
 | Escenario | Resultado |
 |---|---|
-| `mvn -B test package` | BUILD SUCCESS; 132 pruebas, 0 fallos, 0 errores, 0 omitidas (última ejecución: 12:20:35 CDMX, nombre Universidad Panamericana corregido) |
+| `mvn -B test package` | BUILD SUCCESS; 132 pruebas, 0 fallos, 0 errores, 0 omitidas (última ejecución: 12:28:00 CDMX, muestras mexicanas) |
 | Segundo `mvn -B -DskipTests package` sin cambiar fuentes | BUILD SUCCESS; se recrea el jar original antes de Shade |
 | `./scripts/demo-launcher.sh --port=18787` | `smoke.ok=true`, HTTP 202, store 13, accepted 1; errores y descartes 0 |
 | Contenido del smoke | 13 filas, 9 símbolos geográficos, 3 eventos sin ubicación; LDAP sintético: 11 found y 2 not-applicable |
@@ -23,6 +23,12 @@ Los tests usan HTTP y LDAP reales aislados en loopback, no servicios institucion
 Se retiraron dos pruebas incidentales de longitud del token y copia de su
 valor. Se conservan las pruebas de aceptación/rechazo de autenticación y
 redacción de secretos; el conteo final no incluye esos getters/defaults.
+
+Contexto institucional confirmado por universidad-meta en `mm_2bb4305f0344`:
+Universidad Panamericana, Campus Ciudad de México, México. Fuente durable:
+`05 - University/_MAW/00 - ENTRY.md`, sección «Contexto de University».
+Las muestras y fixtures propios usan CDMX/México o referencias neutras;
+se conserva el mapa mundial Natural Earth sin modificar sus países.
 
 ## Correcciones verificadas durante integración
 

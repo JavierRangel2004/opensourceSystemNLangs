@@ -55,7 +55,7 @@ class FilterStateTest {
                 "ok", "jramirez", "", null, null, "i");
         Alert noMatch = new Alert("a", Instant.now(),
                 "001", "agent", "r1", 5,
-                "ok", "guest", "PA", null, null, "i");
+                "ok", "guest", "MX", null, null, "i");
         FiltersPanel.FilterState byDesc = new FiltersPanel.FilterState(
                 0, null, "brute", null, null);
         assertTrue(byDesc.accepts(matchDesc));

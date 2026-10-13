@@ -53,11 +53,11 @@ class WebHookServerE2ETest {
 
     private String alertJson(String id) {
         return "{\"id\":\"" + id + "\",\"timestamp\":\"2026-10-13T08:00:00Z\","
-                + "\"agent\":{\"id\":\"001\",\"name\":\"web-panama\"},"
+                + "\"agent\":{\"id\":\"001\",\"name\":\"web-cdmx\"},"
                 + "\"rule\":{\"id\":\"5715\",\"level\":3,\"description\":\"SSH login\"},"
                 + "\"data\":{\"srcuser\":\"agarcia\"},"
-                + "\"country\":\"Panama\","
-                + "\"geoLocation\":{\"latitude\":8.98,\"longitude\":-79.51},"
+                + "\"country\":\"Mexico\","
+                + "\"geoLocation\":{\"latitude\":19.4326,\"longitude\":-99.1332},"
                 + "\"integration\":\"custom-dashboard\"}";
     }
 

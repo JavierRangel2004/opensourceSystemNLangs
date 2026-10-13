@@ -18,7 +18,7 @@ import java.awt.Font;
  * manager real de Wazuh.</p>
  *
  * <p>El panel también muestra el subtítulo "Dashboard Wazuh — Universidad
- * de Panamá" para reforzar la orientación institucional.</p>
+ * Panamericana" para reforzar la orientación institucional.</p>
  */
 public final class BannerPanel extends JPanel {
 
