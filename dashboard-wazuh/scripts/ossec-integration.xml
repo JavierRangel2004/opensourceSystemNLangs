@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Snippet de configuración de Wazuh Manager para invocar el script custom-dashboard.
+  Pegar dentro de <ossec_config> en /var/ossec/etc/ossec.conf.
+
+  Wazuh invoca el script con argv = [script, alert_file, api_key, hook_url]
+  según https://documentation.wazuh.com/current/user-manual/manager/integration-with-external-apis.html
+  (prefijo "custom-"). El hook_url y api_key declarados aquí se pasan al
+  script como argv[3] y argv[2] respectivamente.
+
+  Operación:
+    * El script debe residir en /var/ossec/integrations/custom-dashboard
+      y ser propiedad de root:wazuh con modo 0750 (un archivo).
+    * El api_key es el token Bearer que valida el receptor. NO debe
+      publicarse: este repo no incluye el valor; el operador lo inyecta
+      en el manager o vía variable de entorno / archivo restringido.
+    * <hook_url> NO debe contener credenciales en su cadena.
+    * El receptor escucha por defecto en http://127.0.0.1:8787/api/wazuh-events.
+      Para tráfico fuera del host usar HTTPS con CA válida.
+
+  Aplicar requiere reinicio del manager y permisos administrativos sobre el
+  host; este paquete NO modifica la configuración del manager.
+-->
+<integration>
+    <name>custom-dashboard</name>
+    <api_key>REEMPLAZAR_POR_TOKEN_BEARER_DESDE_GESTOR_DE_SECRETOS</api_key>
+    <hook_url>http://127.0.0.1:8787/api/wazuh-events</hook_url>
+    <level>3</level>
+    <alert_format>json</alert_format>
+</integration>

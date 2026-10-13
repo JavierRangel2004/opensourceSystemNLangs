@@ -1,0 +1,208 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+custom-dashboard — integración personalizada de Wazuh.
+
+Wazuh Manager ejecuta este script por cada alerta (configurar en
+/var/ossec/etc/ossec.conf -> <integration name="custom-dashboard">). El
+Manager escribe la alerta en un archivo temporal y la pasa como primer
+argumento; los argumentos 2 y 3 son api_key y hook_url configurados en el
+XML. Esta implementación reenvía la alerta al dashboard por HTTPS/HTTP
+loopback. El token Bearer se toma de argv[2]; si está ausente se recurre a
+la variable de entorno CUSTOM_DASHBOARD_TOKEN, y como último recurso al
+archivo /etc/wazuh-dashboard/token (modo 0640 root:wazuh) para entornos
+donde el servicio del Manager no hereda variables de entorno de la shell
+de invocación.
+
+Uso (invocado por Wazuh Manager):
+    ./custom-dashboard <alert.json> <api_key> <hook_url>
+
+Argumentos posicionales (orden Wazuh):
+    argv[1]  ruta al archivo JSON con la alerta
+    argv[2]  api_key (token Bearer) configurado en <integration>
+    argv[3]  hook_url del dashboard
+
+Banderas opcionales:
+    --timeout=SECS    timeout HTTP (default 5)
+    --insecure        (rechazado) sólo se documenta para que el operador
+                     sepa que NO se acepta TLS inseguro: el dashboard exige
+                     HTTPS para hook_url no loopback.
+
+Notas operativas (ver CONFIGURATION.md para más detalle):
+    * Permisos: el archivo debe ser propiedad de root:wazuh y modo 0750;
+      ruta canónica /var/ossec/integrations/custom-dashboard (un archivo).
+    * El token NO debe escribirse en el XML público del repo: se inyecta
+      por el Manager (api_key) o por variable de entorno; nunca por línea
+      de comandos para evitar fugas en `ps`.
+    * El hook_url se valida: https obligatorio salvo loopback/localhost;
+      URL con userinfo (user:pass@host) se rechaza para evitar que el
+      secreto viaje en la URL.
+    * El log nunca incluye cuerpo crudo ni encabezados; sólo nivel +
+      tamaño + estado HTTP. La URL logueada se trunca al esquema y host.
+"""
+
+import argparse
+import ipaddress
+import json
+import os
+import sys
+import urllib.error
+import urllib.parse
+import urllib.request
+
+
+TOKEN_FILE = "/etc/wazuh-dashboard/token"
+MAX_BODY_BYTES = 1024 * 1024
+
+
+def log(level: str, message: str) -> None:
+    sys.stderr.write("[custom-dashboard] " + level + ": " + message + "\n")
+    sys.stderr.flush()
+
+
+def resolve_token() -> str:
+    argv = sys.argv
+    if len(argv) >= 3 and argv[2]:
+        return argv[2].strip()
+    env = os.environ.get("CUSTOM_DASHBOARD_TOKEN")
+    if env:
+        return env.strip()
+    try:
+        with open(TOKEN_FILE, "r", encoding="utf-8") as f:
+            token = f.read().strip()
+            if token:
+                return token
+    except OSError:
+        pass
+    return ""
+
+
+def resolve_endpoint() -> str:
+    argv = sys.argv
+    if len(argv) >= 4 and argv[3]:
+        return argv[3].strip()
+    env = os.environ.get("CUSTOM_DASHBOARD_ENDPOINT")
+    if env:
+        return env
+    return "http://127.0.0.1:8787/api/wazuh-events"
+
+
+def resolve_timeout() -> int:
+    for a in sys.argv:
+        if a.startswith("--timeout="):
+            try:
+                return max(1, int(a.split("=", 1)[1]))
+            except ValueError:
+                return 5
+    return 5
+
+
+def is_loopback_host(host: str) -> bool:
+    """True si el host es loopback literal (IPv4 127/8, IPv6 ::1, 'localhost')."""
+    if not host:
+        return False
+    if host.lower() == "localhost":
+        return True
+    try:
+        ip = ipaddress.ip_address(host)
+        return ip.is_loopback
+    except ValueError:
+        return False
+
+
+def validate_endpoint(endpoint: str) -> None:
+    """Lanza ValueError si el endpoint no es seguro para bearer en claro."""
+    parsed = urllib.parse.urlparse(endpoint)
+    if parsed.username or parsed.password:
+        raise ValueError("hook_url contiene userinfo (user:pass@host); rechazado")
+    scheme = (parsed.scheme or "").lower()
+    if scheme not in ("http", "https"):
+        raise ValueError("hook_url con esquema inválido: " + scheme)
+    host = parsed.hostname or ""
+    if scheme == "http" and not is_loopback_host(host):
+        raise ValueError("hook_url http:// requiere host loopback; use https para hosts remotos")
+
+
+def read_alert(path: str):
+    try:
+        with open(path, "rb") as f:
+            return f.read()
+    except OSError as ex:
+        log("error", "no se pudo leer el archivo de alerta: " + str(ex))
+        return None
+
+
+def safe_endpoint_label(endpoint: str) -> str:
+    parsed = urllib.parse.urlparse(endpoint)
+    return (parsed.scheme or "http") + "://" + (parsed.hostname or "?") + "/*"
+
+
+class NoRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        return None
+
+
+def post(endpoint: str, token: str, body: bytes, timeout: int) -> int:
+    if len(body) > MAX_BODY_BYTES:
+        log("error", "alerta excede 1 MiB; descartada sin enviar")
+        return 0
+    req = urllib.request.Request(
+        endpoint,
+        data=body,
+        headers={
+            "Authorization": "Bearer " + token,
+            "Content-Type": "application/json",
+            "User-Agent": "wazuh-custom-dashboard/1.0",
+        },
+        method="POST",
+    )
+    try:
+        opener = urllib.request.build_opener(
+            urllib.request.ProxyHandler({}), NoRedirect)
+        with opener.open(req, timeout=timeout) as resp:
+            return resp.getcode()
+
+    except urllib.error.HTTPError as ex:
+        return ex.code
+    except urllib.error.URLError as ex:
+        log("error", "fallo de transporte: " + type(ex.reason).__name__)
+        return 0
+    except (TimeoutError, ConnectionError) as ex:
+        log("error", "timeout/conexión: " + type(ex).__name__)
+        return 0
+
+
+def main() -> int:
+    if len(sys.argv) < 2:
+        log("error", "uso: custom-dashboard <alert.json> <api_key> <hook_url>")
+        return 2
+    if "--insecure" in sys.argv:
+        log("error", "TLS inseguro no soportado; usar HTTPS con CA válida")
+        return 7
+    token = resolve_token()
+    if not token:
+        log("error", "token ausente (api_key, CUSTOM_DASHBOARD_TOKEN o " + TOKEN_FILE + ")")
+        return 3
+    body = read_alert(sys.argv[1])
+    if body is None:
+        return 4
+    try:
+        json.loads(body)
+    except json.JSONDecodeError as ex:
+        log("error", "JSON inválido del manager: " + ex.msg)
+        return 5
+    endpoint = resolve_endpoint()
+    try:
+        validate_endpoint(endpoint)
+    except ValueError as ex:
+        log("error", "hook_url inválido: " + str(ex))
+        return 8
+    timeout = resolve_timeout()
+    status = post(endpoint, token, body, timeout)
+    log("info", "endpoint=" + safe_endpoint_label(endpoint)
+        + " alerta=" + str(len(body)) + "B estado=" + str(status))
+    return 0 if 200 <= status < 300 else 6
+
+
+if __name__ == "__main__":
+    sys.exit(main())

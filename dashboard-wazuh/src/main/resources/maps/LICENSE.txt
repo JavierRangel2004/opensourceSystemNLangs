@@ -1,0 +1,25 @@
+Recurso geografico: ne_110m_admin_0_countries.geojson
+=========================================================
+
+Fuente: Natural Earth (https://www.naturalearthdata.com/)
+Distribuidor del espejo GeoJSON: nvkelso/natural-earth-vector
+URL del recurso descargado:
+  https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_admin_0_countries.geojson
+
+Licencia:
+  Natural Earth es obra de dominio publico. Los datos se publican sin
+  restricciones de copyright y pueden usarse libremente con o sin
+  atribucion. Ver:
+    https://www.naturalearthdata.com/downloads/110m-cultural-vectors/
+  (seccion "License").
+
+Proposito en dashboard-wazuh:
+  Contornos de paises para el mapa tematico del panel
+  edu.up.wazuh.ui.GeoMapPanel. Se carga desde el classpath en
+  tiempo de ejecucion, sin red ni I/O bloqueante.
+
+Notas:
+  - El archivo se distribuye sin modificar tras la descarga.
+  - Si la descarga inicial no es posible, el panel sigue funcionando:
+    muestra la cuadricula y los simbolos sin continentes y avisa
+    "Mapa base no disponible".

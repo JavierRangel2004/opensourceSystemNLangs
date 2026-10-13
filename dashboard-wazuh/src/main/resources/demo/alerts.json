@@ -1,0 +1,124 @@
+{
+  "banner": "MUESTRA — Datos sintéticos marcados. Coordenadas reales como referencia; usuarios SINTÉTICOS. NO confundir con AD/LDAPS institucional.",
+  "timestamp_policy": "Cada alerta lleva _minutes_ago; DemoDataLoader reubica timestamp a Instant.now().minus(_minutes_ago) para que las 12 alertas caigan en la última hora cuando arranca la presentación. Los _minutes_ago NO se modifican en vivo (sólo modo --demo).",
+  "field_policy": "username se almacena en data.srcuser (formato Wazuh estándar) — no en la raíz; geoLocation en la raíz con latitude/longitude. Dos alertas sin geoLocation para ejercitar el camino 'sin ubicación'.",
+  "alerts": [
+    {
+      "id": "demo-001",
+      "_minutes_ago": 58,
+      "agent": {"id": "001", "name": "web-panama"},
+      "rule": {"id": "5715", "level": 3, "description": "SSH login succeeded"},
+      "data": {"srcuser": "agarcia"},
+      "country": "Panama",
+      "geoLocation": {"latitude": 8.9824, "longitude": -79.5199},
+      "integration": "custom-dashboard"
+    },
+    {
+      "id": "demo-002",
+      "_minutes_ago": 55,
+      "agent": {"id": "002", "name": "db-mexico"},
+      "rule": {"id": "5402", "level": 5, "description": "Successful sudo session"},
+      "data": {"srcuser": "jlopez"},
+      "country": "Mexico",
+      "geoLocation": {"latitude": 19.4326, "longitude": -99.1332},
+      "integration": "custom-dashboard"
+    },
+    {
+      "id": "demo-003",
+      "_minutes_ago": 53,
+      "agent": {"id": "003", "name": "app-argentina"},
+      "rule": {"id": "31101", "level": 8, "description": "Web server 4xx error spike"},
+      "data": {"srcuser": "mfernandez"},
+      "country": "Argentina",
+      "geoLocation": {"latitude": -34.6037, "longitude": -58.3816},
+      "integration": "custom-dashboard"
+    },
+    {
+      "id": "demo-004",
+      "_minutes_ago": 50,
+      "agent": {"id": "004", "name": "edge-espana"},
+      "rule": {"id": "5501", "level": 10, "description": "Login failure burst from external IP"},
+      "data": {"srcuser": "cmoreno"},
+      "country": "Spain",
+      "geoLocation": {"latitude": 40.4168, "longitude": -3.7038},
+      "integration": "custom-dashboard"
+    },
+    {
+      "id": "demo-005",
+      "_minutes_ago": 45,
+      "agent": {"id": "005", "name": "api-japon"},
+      "rule": {"id": "5301", "level": 12, "description": "Suspicious process spawned"},
+      "data": {"srcuser": "suzuki"},
+      "country": "Japan",
+      "geoLocation": {"latitude": 35.6762, "longitude": 139.6503},
+      "integration": "custom-dashboard"
+    },
+    {
+      "id": "demo-006",
+      "_minutes_ago": 42,
+      "agent": {"id": "006", "name": "edge-eeuu"},
+      "rule": {"id": "5701", "level": 6, "description": "Windows event log cleared"},
+      "data": {"srcuser": ""},
+      "country": "United States",
+      "geoLocation": {"latitude": 40.7128, "longitude": -74.0060},
+      "integration": "custom-dashboard"
+    },
+    {
+      "id": "demo-007",
+      "_minutes_ago": 38,
+      "agent": {"id": "007", "name": "edge-colombia"},
+      "rule": {"id": "5720", "level": 4, "description": "User account created"},
+      "data": {"srcuser": "aruiz"},
+      "country": "Colombia",
+      "integration": "custom-dashboard"
+    },
+    {
+      "id": "demo-008",
+      "_minutes_ago": 33,
+      "agent": {"id": "008", "name": "edge-chile"},
+      "rule": {"id": "100101", "level": 9, "description": "Possible rootkit signature detected"},
+      "data": {"srcuser": "etorres"},
+      "country": "Chile",
+      "geoLocation": {"latitude": -33.4489, "longitude": -70.6693},
+      "integration": "custom-dashboard"
+    },
+    {
+      "id": "demo-009",
+      "_minutes_ago": 27,
+      "agent": {"id": "009", "name": "edge-peru"},
+      "rule": {"id": "30315", "level": 7, "description": "Apache access from tor exit node"},
+      "data": {"srcuser": "lperez"},
+      "country": "Peru",
+      "integration": "custom-dashboard"
+    },
+    {
+      "id": "demo-010",
+      "_minutes_ago": 18,
+      "agent": {"id": "010", "name": "edge-uruguay"},
+      "rule": {"id": "5726", "level": 2, "description": "Password changed for privileged user"},
+      "data": {"srcuser": "gsosa"},
+      "country": "Uruguay",
+      "geoLocation": {"latitude": -34.9011, "longitude": -56.1645},
+      "integration": "custom-dashboard"
+    },
+    {
+      "id": "demo-011",
+      "_minutes_ago": 9,
+      "agent": {"id": "011", "name": "edge-costa-rica"},
+      "rule": {"id": "5700", "level": 11, "description": "Possible Linux kernel exploit attempt"},
+      "data": {"srcuser": "jquesada"},
+      "country": "Costa Rica",
+      "geoLocation": {"latitude": 9.9281, "longitude": -84.0907},
+      "integration": "custom-dashboard"
+    },
+    {
+      "id": "demo-012",
+      "_minutes_ago": 2,
+      "agent": {"id": "012", "name": "edge-ecuador"},
+      "rule": {"id": "5921", "level": 3, "description": "Scheduled backup completed"},
+      "data": {"srcuser": ""},
+      "country": "Ecuador",
+      "integration": "custom-dashboard"
+    }
+  ]
+}
