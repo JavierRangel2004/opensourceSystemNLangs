@@ -1,0 +1,30 @@
+# Publicación inicial por lista permitida: originales de clase conservados localmente.
+# LDAP, Derby, correo, runtimes y archivos ZIP contienen candidatos sensibles.
+/*
+!/.gitignore
+!/README.md
+!/dashboard-wazuh/
+
+# Secretos y datos reales: nunca versionar, también dentro del dashboard.
+.env
+.env.*
+!.env.example
+*.local
+.local/
+secrets/
+*.pem
+*.key
+*.p12
+*.jks
+*.log
+*.jsonl
+*.ndjson
+.DS_Store
+*.class
+*.jar
+*.zip
+target/
+build/
+dist/
+nbproject/private/
+output/
